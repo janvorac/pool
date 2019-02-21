@@ -13,6 +13,7 @@ import physics
 
 class Ball():
     def __init__(self):
+        self.charge = np.sign(np.random.rand() - 0.5)
         self.pos = np.zeros(2, dtype=float)
         self.velocity = np.zeros(2, dtype=float)
 
@@ -27,6 +28,13 @@ class Ball():
         self.pos = np.array(pos, dtype=float)
 
     def update(self, *args):
+        ###########################
+        ###zkousim magnet
+        ##########################
+        v = np.hstack([self.velocity, np.zeros (1)])
+        B = np.array([0,0,1])
+        force = self.charge*np.cross(v, B)[:2]
+        self.apply_force(force)
         self.velocity *= config.friction_coeff
         self.pos += self.velocity
 
